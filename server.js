@@ -6,7 +6,6 @@
 
 // Import Dependencies
 import env from "dotenv";
-// Import Internal Module 
 import app from "./app.js";
 
 // ENV Configuration

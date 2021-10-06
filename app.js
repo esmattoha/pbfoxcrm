@@ -2,8 +2,9 @@
 import env from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-// Import Internal Module
 import authRoute from "./user/auth/authRoute.js";
+import AppError from "./utils/appError.js";
+import catchAsync from "./utils/catchAsync.js";
 
 
 const app = express();
@@ -27,7 +28,15 @@ try {
 // JSON Parser
 app.use(express.json());
 
+//router
 app.use("/api/v2/auth", authRoute);
+
+
+// 404 Error Handling 
+app.all("*" , catchAsync(async(req, res, next ) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+}));
+
 
 // Export
 export default app;

@@ -2,7 +2,7 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import express from "express";
-// Import Internal Module 
+import catchAsync from "../../utils/catchAsync.js";
 import User from "../userModel.js";
 
 
@@ -10,7 +10,7 @@ import User from "../userModel.js";
 const authRouter = express.Router();
 
 
-authRouter.post("/register", async(req, res, next) =>{
+authRouter.post("/register", catchAsync(async(req, res, next) =>{
     const { name , email, phone, password, confirmPassword , company} = req.body ; 
 
     if (!name || !email || !password || !confirmPassword || !phone) {
@@ -40,7 +40,7 @@ authRouter.post("/register", async(req, res, next) =>{
         status: 'success',
         data: user,
       });
-} ) 
+}) ) 
 
 
 // Export
