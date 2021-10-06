@@ -2,6 +2,9 @@
 import env from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
+// Import Internal Module
+import authRoute from "./user/auth/authRoute.js";
+
 
 const app = express();
 env.config();  // env configuration
@@ -20,6 +23,11 @@ try {
   console.log(error);
   process.exit(1);
 }
+
+// JSON Parser
+app.use(express.json());
+
+app.use("/api/v2/auth", authRoute);
 
 // Export
 export default app;
