@@ -4,8 +4,10 @@
   "description": "1st Product of Foxflue",
   "main": "server.js",
   "scripts": {
+    "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "author": "Dipu,Jahid",
   "license": "ISC",
   "dependencies": {
