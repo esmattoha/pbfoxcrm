@@ -14,7 +14,7 @@ const projectSchema = new Schema(
       required: true,
     },
     descriptions: {
-      type: String,
+      type: Object,
       required: true,
     },
   },
