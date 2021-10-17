@@ -2,23 +2,52 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import express from "express";
+import AppError from "../../utils/appError.js";
 import catchAsync from "../../utils/catchAsync.js";
+import signedAccessToken from "../../utils/jwtHelper.js";
 import User from "../userModel.js";
 
 
 
 const authRouter = express.Router();
 
+authRouter.post("/login", catchAsync(async(req, res, next)=>{
+    const { email, password } = req.body ; 
+
+    if ( !email || !password ) {
+        return next(new AppError("Invalid Input Data.", 406));
+      }
+
+      const user = await User.findOne({email : email}).select("+password");
+
+      if(!user){
+        return next(new AppError("Invalid email or Password.", 406));
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if(!isMatch){
+        return next(new AppError("Invalid email or Password.", 406));
+      }
+
+      const token = await signedAccessToken(user._id, user.email);
+      
+      res.status(200).json({
+          status: "success",
+          token : token ,
+          data : {
+              _id : user._id,
+              email: user.email,
+              type : user.role
+          }
+      })
+}))
 
 authRouter.post("/register", catchAsync(async(req, res, next) =>{
     const { name , email, phone, password, confirmPassword , company} = req.body ; 
 
-    if (!name || !email || !password || !confirmPassword || !phone) {
-        return res.status(406).json("Invalid Input data");;
+    if (!name || !email || !password || !confirmPassword || !phone && (password !== confirmPassword)) {
+        return next(new AppError("Invalid Input Data.", 406));
       }
-    if(password !== confirmPassword){
-        return res.status(406).json("Passwords do not match");
-    }
 
     const varificationToken =  crypto.randomBytes(32).toString('hex');
     const encryptedVarificationToken = crypto
@@ -41,6 +70,7 @@ authRouter.post("/register", catchAsync(async(req, res, next) =>{
         data: user,
       });
 }) ) 
+
 
 
 // Export
