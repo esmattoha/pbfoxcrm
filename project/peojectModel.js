@@ -11,11 +11,11 @@ const projectSchema = new Schema(
     },
     title: {
       type: String,
-      required: true,
+      required: [true, "Title is required."],
     },
     descriptions: {
       type: Object,
-      required: true,
+      required: [true, "Description is required."],
     },
   },
   {
