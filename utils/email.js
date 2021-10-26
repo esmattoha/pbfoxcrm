@@ -1,5 +1,10 @@
 // Import Dependencies
-import nodemailer from 'nodemailer';
+import env from "dotenv";
+// import ejs from "ejs";
+import nodemailer from "nodemailer";
+// import __dirname from "./../__dirname.js";
+
+env.config();
 
 /*
  *  Makeing a Transporter to sending mail
@@ -13,15 +18,22 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
 const sendEmail = (options) => {
-  return transporter.sendMail({
+  // const html = ejs.renderFile(`C:/Users/Dipu/Documents/nodeApps/pbfoxcrm/views/email/welcomeMail.ejs`,(err)=>{
+  //   if(err){
+  //     console.log(err);
+  //   }
+  // });
+
+  
+   transporter.sendMail({
     from: `"${process.env.NODEMAILER_SENDER_NAME}" < ${process.env.NODEMAILER_SENDER_EMAIL} >`,
     to: options.email,
     subject: options.subject,
-    html: `<h1> Hello World </h1>`,
+    text:options.text
   });
 };
 
-
 // export
-export default sendEmail ;
+export default sendEmail;
