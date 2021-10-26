@@ -4,6 +4,7 @@ import express from "express";
 import mongoose from "mongoose";
 import projectRoute from "./project/projectRoute.js";
 import authRoute from "./user/auth/authRoute.js";
+import userRoute from "./user/user/userRoute.js";
 import AppError from "./utils/appError.js";
 import catchAsync from "./utils/catchAsync.js";
 
@@ -31,6 +32,7 @@ app.use(express.json());
 
 //router
 app.use("/api/v2/auth", authRoute);
+app.use("/api/v2/", userRoute);
 app.use("/api/v2/project", projectRoute);
 
 

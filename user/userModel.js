@@ -25,17 +25,20 @@ const UserSchema = new Schema(
     company: {
       type: String,
     },
-    address: {
-      address_line1: {
+    address:[ {
+      addressLine1: {
         type: String,
         trim: true,
       },
-      address_line2: {
+      addressLine2: {
         type: String,
         trim: true,
       },
       country: {
         type: String,
+      },
+      state:{
+        type: String
       },
       city: {
         type: String,
@@ -43,7 +46,7 @@ const UserSchema = new Schema(
       zipcode: {
         type: Number,
       },
-    },
+    }],
     role: {
       type: String,
       enum: ['user', 'manager', 'admin'],

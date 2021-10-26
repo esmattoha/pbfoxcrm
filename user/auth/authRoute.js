@@ -50,9 +50,9 @@ authRouter.post("/login", catchAsync(async(req, res, next)=>{
 }))
 
 authRouter.post("/register", catchAsync(async(req, res, next) =>{
-    const { name , email, phone, password, confirmPassword , company} = req.body ; 
+    const { name , email, phone, password, company} = req.body ; 
 
-    if (!name || !email || !password || !confirmPassword || !phone && (password !== confirmPassword)) {
+    if (!name || !email || !password || !phone ) {
         return next(new AppError("Invalid Input Data.", 406));
       }
 
