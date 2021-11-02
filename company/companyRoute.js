@@ -1,14 +1,22 @@
 // Import Dependencies
 import express from "express";
+import { validationResult } from "express-validator";
 import AppError from "./../utils/appError.js";
 import catchAsync from "./../utils/catchAsync.js";
 import Company from "./companyModel.js";
+import validator from "./validator.js";
 
 const companyRouter = express.Router();
 
 companyRouter.post(
-  "/company",
+  "/company", validator ,
   catchAsync(async (req, res, next) => {
+    const error = validationResult(req);
+
+    if(!error.isEmpty()){
+      return res.status(403).json(error);
+    }
+    
     const createdCompany = await Company.create(req.body);
 
     if (!createdCompany) {
