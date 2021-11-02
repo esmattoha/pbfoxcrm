@@ -9,12 +9,6 @@ const projectRoute = express.Router();
 projectRoute.post(
   "/",
   catchAsync(async (req, res, next) => {
-    const { customer, title, descriptions } = req.body;
-
-    if (!customer || !title || !descriptions) {
-      return next(new AppError(`Invalid input data`, 406));
-    }
-
     const project = await Project.create(req.body);
 
     if (!project) {
@@ -63,7 +57,7 @@ projectRoute.get(
 projectRoute.patch(
   "/:id",
   catchAsync(async (req, res, next) => {
-    const project = await Project.findByIdAndUpdate(req.params.id, req.body);
+    const project = await Project.findByIdAndUpdate(req.params.id,{$set: req.body});
 
     if (!project) {
       return next(new AppError(`Resource not found.`, 404));
@@ -71,7 +65,6 @@ projectRoute.patch(
 
     res.status(200).json({
       status: "success",
-      data: project,
     });
   })
 );
