@@ -2,10 +2,12 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import express from "express";
+import { validationResult } from "express-validator";
 import AppError from "../../utils/appError.js";
 import catchAsync from "../../utils/catchAsync.js";
 import signedAccessToken from "../../utils/jwtHelper.js";
 import User from "../userModel.js";
+import validator from "../validator.js";
 import sendEmail from "./../../utils/email.js";
 
 
@@ -49,13 +51,13 @@ authRouter.post("/login", catchAsync(async(req, res, next)=>{
       })
 }))
 
-authRouter.post("/register", catchAsync(async(req, res, next) =>{
-    const { name , email, phone, password, company} = req.body ; 
+authRouter.post("/register", validator ,catchAsync(async(req, res, next) =>{
+  const { name , email, phone, company, password } = req.body ;
+    const error = validationResult(req);
 
-    if (!name || !email || !password || !phone ) {
-        return next(new AppError("Invalid Input Data.", 406));
-      }
-
+    if(!error.isEmpty()){
+      return res.status(403).json(error);
+    }
     const varificationToken =  crypto.randomBytes(32).toString('hex');
     const encryptedVarificationToken = crypto
     .createHash('sha256')
