@@ -15,13 +15,16 @@ const UserSchema = new Schema(
       unique: [true, 'Email address is already in use'],
     },
     phone: {
-      type: String,
-      required: [true, 'Phone number is required'],
+      type: String
     },
     password: {
       type: String,
       required: true ,
       select: false,
+    },
+    oAuth:{
+      google_id : String,
+      github_id: String
     },
     company: {
       type: String,

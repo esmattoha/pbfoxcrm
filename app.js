@@ -3,6 +3,8 @@ import env from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import companyRoute from "./company/companyRoute.js";
+import gitubOAuthRoute from "./oAuth/githubOAuth/githubOAuthRoute.js";
+import googleOAuthRoute from "./oAuth/google/googleOAuthRoute.js";
 import projectRoute from "./project/projectRoute.js";
 import authRoute from "./user/auth/authRoute.js";
 import userRoute from "./user/user/userRoute.js";
@@ -33,6 +35,8 @@ app.use(express.json());
 //router
 app.use("/api/v2/auth", authRoute);
 app.use("/api/v2/", userRoute);
+app.use("/api/v2", googleOAuthRoute);
+app.use("/api/v2", gitubOAuthRoute);
 app.use("/api/v2", companyRoute);
 app.use("/api/v2/project", projectRoute);
 
